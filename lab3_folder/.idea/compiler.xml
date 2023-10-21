@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="lab3_client" />
-        <module name="lab2_standalone" />
+        <module name="lab3_standalone" />
       </profile>
     </annotationProcessing>
   </component>

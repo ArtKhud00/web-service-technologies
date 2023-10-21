@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Context>
-    <!-- Настройки источника данных JDBC -->
-    <Resource name="jdbc/ifmo-ws" auth="Container" type="javax.sql.DataSource"
-              username="artem" password="pgpwd54"
-              driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://localhost:5432/carsdb"/>
-</Context>

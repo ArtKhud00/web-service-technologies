@@ -47,7 +47,7 @@ public class PostgreSQLDAO {
                 int car_year = rs.getInt("year");
                 String enginetype = rs.getString("enginetype");
                 int car_perfomance = rs.getInt("perfomance");
-                Car car = new Car(carbrand, carmodel, year, enginetype, perfomance);
+                Car car = new Car(carbrand, carmodel, car_year, enginetype, car_perfomance);
                 cars.add(car);
             }
         } catch (SQLException ex) {

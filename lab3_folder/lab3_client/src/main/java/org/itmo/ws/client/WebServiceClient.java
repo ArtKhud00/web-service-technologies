@@ -8,9 +8,13 @@ public class WebServiceClient {
     public static void main(String[] args) throws MalformedURLException {
         URL url = new URL("http://localhost:8082/CarService?wsdl");
         CarService carService = new CarService(url);
-        List<Car> cars = carService.getCarWebServicePort().getCars();
-        System.out.println("Select all rows in db");
-        printCars(cars);
+        try {
+            List<Car> cars = carService.getCarWebServicePort().getCars();
+            System.out.println("Select all rows in db");
+            printCars(cars);
+        } catch (ThrottlingException ex){
+            System.out.println("Throttling error " + ex);
+        }
         //System.out.println("\n");
 
         System.out.println("Insert new car");
@@ -25,6 +29,8 @@ public class WebServiceClient {
             id = carService.getCarWebServicePort().createNewCar(insert_car);
         } catch (ServiceException ex) {
             System.out.println("Internal service ERROR: " + ex);
+        } catch (ThrottlingException ex) {
+            System.out.println("Throttling error " + ex);
         }
         System.out.println("inserted id = " + id);
 
@@ -36,8 +42,10 @@ public class WebServiceClient {
         Long id1 = -1L;
         try{
             id1 = carService.getCarWebServicePort().createNewCar(notAllFields);
-        } catch (ServiceException ex){
+        } catch (ServiceException ex) {
             System.out.println("Internal service ERROR: " + ex);
+        } catch (ThrottlingException ex) {
+            System.out.println("Throttling error " + ex);
         }
 
         System.out.println("\n");
@@ -50,10 +58,16 @@ public class WebServiceClient {
             isUpdated = carService.getCarWebServicePort().updateCar(id, update_car);
         } catch (ServiceException ex) {
             System.out.println("Internal service ERROR: "+ ex);
+        } catch (ThrottlingException ex) {
+            System.out.println("Throttling error " + ex);
         }
         System.out.println("isUpdated:" + isUpdated);
-        cars = carService.getCarWebServicePort().getCars();
-        printCars(cars);
+        try{
+            List<Car> cars = carService.getCarWebServicePort().getCars();
+            printCars(cars);
+        } catch (ThrottlingException ex){
+            System.out.println("Throttling error " + ex);
+        }
         System.out.println("\n");
 
         isUpdated = false;
@@ -61,10 +75,12 @@ public class WebServiceClient {
         Car nonexist = new Car();
         nonexist.setCarbrand("Mercedes");
         nonexist.setCarbrand("C class");
-        try{
+        try {
             isUpdated = carService.getCarWebServicePort().updateCar(13L,nonexist);
-        }catch (ServiceException ex){
+        } catch (ServiceException ex){
             System.out.println("Internal service ERROR: " + ex);
+        } catch (ThrottlingException ex) {
+            System.out.println("Throttling error " + ex);
         }
         System.out.println("isUpdated: " + isUpdated);
         System.out.println("\n");
@@ -74,6 +90,8 @@ public class WebServiceClient {
             isDeleted =carService.getCarWebServicePort().deleteCar(id);
         } catch(ServiceException ex) {
             System.out.println("Internal service ERROR: " + ex);
+        } catch (ThrottlingException ex) {
+            System.out.println("Throttling error " + ex);
         }
         System.out.println("isDeleted:" + isDeleted);
 
@@ -83,6 +101,8 @@ public class WebServiceClient {
             isDeleted = carService.getCarWebServicePort().deleteCar(id1);
         }catch (ServiceException ex){
             System.out.println("Internal service ERROR: " + ex);
+        } catch (ThrottlingException ex) {
+            System.out.println("Throttling error " + ex);
         }
     }
 

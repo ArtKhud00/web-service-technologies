@@ -1,8 +1,5 @@
 package org.itmo.ws.jaxws.model;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.itmo.ws.jaxws.exception.CarServiceFault;
-import org.itmo.ws.jaxws.exception.ServiceException;
 import org.itmo.ws.jaxws.utils.ConnectionUtil;
 
 import java.sql.*;
@@ -35,7 +32,6 @@ public class PostgreSQLDAO {
     public List<Car> getCarsByParams(Car carparameters) {
         List<Car> cars = new ArrayList<>();
         String query = constructSelectQuery(carparameters);
-        //System.out.println("Query: "+query);
         try(Connection connection = ConnectionUtil.getConnection()){
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -54,13 +50,9 @@ public class PostgreSQLDAO {
         return cars;
     }
 
-    public Long createNewCar(Car car) throws  ServiceException{
+    public Long createNewCar(Car car) {
         String INSERT_SQL_QUERY="INSERT INTO cars (carbrand, carmodel, year,enginetype, perfomance) VALUES (?,?,?,?,?)";
         Long id = -1L;
-        if(!car.isValid()){
-            CarServiceFault fault = CarServiceFault.defaultInstance("Values are not provided for all fields");
-            throw new ServiceException("Values are not provided for all fields", fault);
-        }
         try(Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL_QUERY,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,car.getCarbrand());
@@ -72,67 +64,36 @@ public class PostgreSQLDAO {
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     id = generatedKeys.getLong(1);
-                    return id;
                 }
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
-            CarServiceFault fault = CarServiceFault.defaultInstance("Unable to add new record in table");
-            throw new ServiceException("Unable to add new record in table", fault);
         }
-        return -1L;
-
+        return id;
     }
 
-    public Boolean deleteCar(Long id) throws ServiceException{
+    public Boolean deleteCar(Long id) {
         String DELETE_SQL_QUERY = "DELETE FROM cars WHERE id = ?";
         int deletedRows = -1;
-        if(id == null || id <= 0){
-            CarServiceFault fault = CarServiceFault.defaultInstance("Provided incorrect id");
-            throw new ServiceException("Provided incorrect id", fault);
-        }
         try(Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL_QUERY);
             preparedStatement.setLong(1,id);
             deletedRows = preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
-            CarServiceFault fault = CarServiceFault.defaultInstance("Unable to delete specified record");
-            throw new ServiceException("Unable to delete specified record", fault);
-        }
-        if(deletedRows == 0) {
-            CarServiceFault fault = CarServiceFault.defaultInstance("Nothing was deleted");
-            throw new ServiceException("Nothing was deleted", fault);
         }
         return deletedRows > 0;
     }
 
-    public Boolean updateCar(Long id, Car car) throws ServiceException{
+    public Boolean updateCar(Long id, Car car) {
         int updatedRows = -1;
-        if(id == null || id <= 0){
-            CarServiceFault fault = CarServiceFault.defaultInstance("Provided incorrect id");
-            throw new ServiceException("Provided incorrect id", fault);
-        }
-
-        try(Connection connection = ConnectionUtil.getConnection()){
+        try (Connection connection = ConnectionUtil.getConnection()) {
             String updateQuery = constructUpdateQuery(car);
-            if(updateQuery == null){
-                CarServiceFault fault = CarServiceFault.defaultInstance("Nothing provided to update");
-                throw new ServiceException("Nothing provided to update", fault);
-            }
             updateQuery+="WHERE id=" + id;
             Statement stmt = connection.createStatement();
             updatedRows = stmt.executeUpdate(updateQuery);
-
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
-            CarServiceFault fault = CarServiceFault.defaultInstance("Unable to update specified record");
-            throw new ServiceException("Unable to update specified record", fault);
-        }
-        if(updatedRows == 0){
-            CarServiceFault fault = CarServiceFault.defaultInstance("Nothing was updated");
-            throw new ServiceException("Nothing was updated", fault);
         }
         return updatedRows > 0;
     }

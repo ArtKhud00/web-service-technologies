@@ -13,44 +13,4 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-<!--    <dependencies>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.xml.ws</groupId>-->
-<!--            <artifactId>jaxws-api</artifactId>-->
-<!--            <version>2.3.1</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.sun.xml.ws</groupId>-->
-<!--            <artifactId>webservices-rt</artifactId>-->
-<!--            <version>1.4</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
-<!--    </dependencies>-->
-
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>jaxws-maven-plugin</artifactId>-->
-<!--                <version>1.12</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>wsimport-from-jdk</id>-->
-<!--                        <goals>-->
-<!--                            <goal>wsimport</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <wsdlUrls>-->
-<!--                        <wsdlUrl>http://localhost:8082/CarService?wsdl</wsdlUrl>-->
-<!--                    </wsdlUrls>-->
-<!--                    <keep>true</keep>-->
-<!--                    <packageName>org.itmo.ws.client.genStandAlone</packageName>-->
-<!--                    <sourceDestDir>target/generated</sourceDestDir>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-
 </project>

@@ -26,7 +26,7 @@ public class WebServiceClient {
         } catch (ServiceException ex) {
             System.out.println("Internal service ERROR: " + ex);
         }
-        System.out.println("inserted id = "+id);
+        System.out.println("inserted id = " + id);
 
 
         //System.out.println("\n");
@@ -66,6 +66,7 @@ public class WebServiceClient {
         }catch (ServiceException ex){
             System.out.println("Internal service ERROR: " + ex);
         }
+        System.out.println("isUpdated: " + isUpdated);
         System.out.println("\n");
         System.out.println("Delete BMW M5");
         Boolean isDeleted = false;
